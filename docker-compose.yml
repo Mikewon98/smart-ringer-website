@@ -8,7 +8,7 @@ services:
       - "--include-restarting"
       - "--stop-timeout"
       - "60s"
-      - "--scope=smart-ringer"
+      - "--scope=smart-ringer-website"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
@@ -19,8 +19,8 @@ services:
       - REPO_PASS=${GITHUB_TOKEN}
       - WATCHTOWER_NOTIFICATIONS=shoutrrr
       - WATCHTOWER_NOTIFICATION_URL=${DISCORD_WEBHOOK_URL}
-  smart-ringer:
-    image: ghcr.io/mikewon98/smart-ringer:stable
+  smart-ringer-website:
+    image: ghcr.io/mikewon98/smart-ringer-website:stable
     restart: unless-stopped
     networks:
       - portfolio_default
@@ -28,17 +28,17 @@ services:
       - "traefik.enable=true"
 
       # Main HTTPS router
-      - "traefik.http.routers.smart-ringer.rule=Host(`smartringer.michaelyze.com`)"
-      - "traefik.http.routers.smart-ringer.entrypoints=websecure"
-      - "traefik.http.routers.smart-ringer.tls.certresolver=myresolver"
+      - "traefik.http.routers.smart-ringer-website.rule=Host(`smartringer.michaelyze.com`)"
+      - "traefik.http.routers.smart-ringer-website.entrypoints=websecure"
+      - "traefik.http.routers.smart-ringer-website.tls.certresolver=myresolver"
 
       # HTTP redirect router
-      - "traefik.http.routers.smart-ringer-http.rule=Host(`smartringer.michaelyze.com`)"
-      - "traefik.http.routers.smart-ringer-http.middlewares=redirect-to-https-en"
-      - "traefik.http.routers.smart-ringer-http.entrypoints=web"
+      - "traefik.http.routers.smart-ringer-website-http.rule=Host(`smartringer.michaelyze.com`)"
+      - "traefik.http.routers.smart-ringer-website-http.middlewares=redirect-to-https-en"
+      - "traefik.http.routers.smart-ringer-website-http.entrypoints=web"
 
       # Service configuration
-      - "traefik.http.services.smart-ringer.loadbalancer.server.port=3000"
+      - "traefik.http.services.smart-ringer-website.loadbalancer.server.port=3000"
 
       # Middlewares
       - "traefik.http.middlewares.redirect-to-https-en.redirectscheme.permanent=true"
@@ -51,7 +51,7 @@ services:
 
       # Watchtower
       - "com.centurylinklabs.watchtower.enable=true"
-      - "com.centurylinklabs.watchtower.scope=smart-ringer"
+      - "com.centurylinklabs.watchtower.scope=smart-ringer-website"
 
     env_file:
       - .env
