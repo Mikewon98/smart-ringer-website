@@ -97,8 +97,8 @@ export function HeroSection() {
                 <Image
                   src="/smart-ringer-logo.jpeg"
                   alt="Smart Ringer App Logo"
-                  width={500}
-                  height={500}
+                  width={400}
+                  height={400}
                   className="rounded-3xl shadow-2xl hover:shadow-primary/20 transition-shadow duration-500"
                   priority
                 />
